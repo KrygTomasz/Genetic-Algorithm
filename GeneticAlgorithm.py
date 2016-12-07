@@ -7,6 +7,7 @@ class GeneticAlgorithm:
         self.percentOfBestOnesToLive = percentOfBestOnesToLive
         self.section = section
         self.function = function
+        self.probability = 0.000001
         self.populationX = []
         self.populationY = []
 
@@ -30,11 +31,10 @@ class GeneticAlgorithm:
         return [bestPopulationX, bestPopulationY]
 
     def mutate(self):
-        probability = 0.000001
         minimalPopulationX = numpy.min(self.populationX)
         minimalPopulationY = numpy.min(self.populationY)
-        self.populationX += minimalPopulationX * (probability * numpy.random.normal(0, 0.0001, len(self.populationX)))
-        self.populationY += minimalPopulationY * (probability * numpy.random.normal(0, 0.0001, len(self.populationY)))
+        self.populationX += minimalPopulationX * (self.probability * numpy.random.normal(0, 0.0001, len(self.populationX)))
+        self.populationY += minimalPopulationY * (self.probability * numpy.random.normal(0, 0.0001, len(self.populationY)))
 
     def crossover(self):
         populationXLength = len(self.populationX)
@@ -68,15 +68,16 @@ class GeneticAlgorithm:
 
     def searchMinimum(self, iterations):
         self.generateInitialPopulation()
+        partOfIterations = 0.3
         i = 0
-        while i < iterations:  # 1000 iteracji
+        while i < iterations:
             tempPopulation = self.getBestMembers()
             self.populationX = tempPopulation[0]
             self.populationY = tempPopulation[1]
             self.crossover()
             self.mutate()
             i += 1
-            if i > 300:
-                probability = 0.00000001
+            if i > partOfIterations*iterations:
+                self.probability = 0.00000001
 
         print numpy.min(self.function(self.populationX, self.populationY))
