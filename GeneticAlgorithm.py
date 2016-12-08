@@ -80,4 +80,17 @@ class GeneticAlgorithm:
             if i > partOfIterations*iterations:
                 self.probability = 0.00000001
 
-        print numpy.min(self.function(self.populationX, self.populationY))
+        minimumValueIndex = self.getMinimalValueIndex()
+        return self.function(self.populationX[minimumValueIndex], self.populationY[minimumValueIndex])
+
+    def getMinimalValueIndex(self):
+        values = self.function(self.populationX, self.populationY)
+        sortedValuesIndexes = values.argsort()
+        minimumValueIndex = sortedValuesIndexes[0]
+        return minimumValueIndex
+
+    def getArgumentsOfMinimumValue(self):
+        minimumValueIndex = self.getMinimalValueIndex()
+        minX = self.populationX[minimumValueIndex]
+        minY = self.populationY[minimumValueIndex]
+        return [minX, minY]

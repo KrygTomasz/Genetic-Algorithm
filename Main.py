@@ -12,4 +12,7 @@ searchingSection = [-100, 100]
 GA = GeneticAlgorithm(numberOfPopulationMembers, percentOfBestOnesToLive, searchingSection, function)
 
 #wydrukowanie wyniku:
-GA.searchMinimum(iterations=1000)
+print "Searching approximated minimum..."
+minimumValue = GA.searchMinimum(iterations=1000)
+minimumPoint = GA.getArgumentsOfMinimumValue()
+print "Found minimum ", minimumValue, " at point ", minimumPoint
